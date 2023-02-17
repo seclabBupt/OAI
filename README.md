@@ -9,18 +9,18 @@ Xftp，可用于将代码拷到本地方便阅读，连接服务器的步骤与X
 ## 内核相关处理
 考虑到OAI 对内核非常敏感，很多莫名其表的错误都是由内核不适应导致的，所以安装一下低延时内核等模块
 
-###安装 low-latency kernel（低延时内核）：
+### 安装 low-latency kernel（低延时内核）：
 sudo apt-get install linux-lowlatency
 sudo apt-get install linux-image-`uname -r | cut -d- -f1-2`-lowlatency
 sudo apt-get install linux-headers-`uname -r | cut -d- -f1-2`-lowlatency
 sudo reboot
 
-###加载 GTP 内核模块（for OAI-CN）：
+### 加载 GTP 内核模块（for OAI-CN）：
 sudo modprobe gtp
 dmesg | tail # You should see something that says about GTP kernel module
 为了让OAI支持接入更多的UE，可能会需要修改CPU相关功能来压榨PC的性能，具体涉及到 在 BIOS 中移除电源管理功能（P-states, C-states）、在 BIOS 中关闭超线程（hyper-threading）、禁用 Intel CPU 的 P-state 驱动（Intel CPU 专用的频率调节器驱动）、将 intel_powerclamp（Intel 电源管理驱动程序）加入启动黑名单、关闭 CPU 睿频，这里暂不使用，需要的话查看https://www.cnblogs.com/jmilkfan-fanguiju/p/12789792.html
 
-##OAI核心网部署
+## OAI核心网部署
 来源：https://gitlab.eurecom.fr/mosaic5g/mosaic5g/-/wikis/tutorials/oai-cn
 //Install OAI-CN as a snap:
 sudo snap install oai-cn --channel=edge --devmode
@@ -29,7 +29,7 @@ sudo snap install oai-cn --channel=edge --devmode
 sudo oai-cn.help 
 核心网需要MySQL注册UE列表，所以先安装mysql：
 
-###mysql安装
+### mysql安装
 $ sudo apt install mysql-server mysql-client
 $ sudo mysql_secure_installation # after new installation #root用户先暂停这一步
 $ mysql -u root -p
@@ -39,7 +39,7 @@ ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password by 'mynewpas
 exit
 sudo mysql_secure_installation #回归之前暂停的第二步
 
-###HSS安装部署
+### HSS安装部署
 1.	初始化 HSS: sudo oai-cn.hss-init
 2.	找到 configuration 文件: sudo oai-cn.hss-conf-get，屏幕会输出该文件所在的路径
 3.	修改 hss.conf 文件，修改登录mysql的用户名（root）和密码（之前自己设置的密码），并修改OPERATOR_key = "11111111111111111111111111111111";并且该文件内会有hss_fd.conf的路径
@@ -48,7 +48,7 @@ sudo mysql_secure_installation #回归之前暂停的第二步
 6.	运行HSS： sudo oai-cn.hss
 7.	最后一行为"Initializing S6a layer: DONE"即部署成功
 
-###MME安装部署
+### MME安装部署
 1.	初始化 MME: sudo oai-cn.mme-init
 2.	找到 configuration 文件: sudo oai-cn.mme-conf-get
 3.	在 mme.conf: 修改并记录GUMMEI_LIST和TAI_LIST的前两个参数保持一致（两个连起来即PLMN），此外还需要检查NETWORK_INTERFACES: MME_IPV4_ADDRESS_FOR_S1_MME to 127.0.1.10/24、MME_IPV4_ADDRESS_FOR_S11_MME to 127.0.11.1/8、S-GW: SGW_IPV4_ADDRESS_FOR_S11 to 127.0.11.2/8，但是现在版本应该默认就是对的不需要修改，在该文件中找到mme_fd.conf的路径
@@ -56,7 +56,7 @@ sudo mysql_secure_installation #回归之前暂停的第二步
 5.	启动MME：sudo oai-cn.mme
 6.	最后一行为Peer .openair4G.eur is now connected即成功（保持HSS后台运行）
 
-###SPGW安装部署
+### SPGW安装部署
 1.	初始化 SPGW: sudo oai-cn.spgw-init
 2.	在 spgw.conf文件中，修改以下参数
 SGW_IPV4_ADDRESS_FOR_S11 to 127.0.11.2/8
@@ -68,7 +68,7 @@ DEFAULT_DNS_IPV4_ADDRESS: your DNS
 
 
 
-##启动传输步骤
+## 启动传输步骤
 基站和UE需要各自打开一个窗口，都先进入该路径：cd oai/openairinterface5g-2021.w23/cmake_targets/ran_build/build
 
 一个窗口启动基站：RFSIMULATOR=server ./nr-softmodem -O ../../../targets/PROJECTS/GENERIC-LTE-EPC/CONF/gnb.band78.tm1.106PRB.usrpn300.conf --parallel-config PARALLEL_SINGLE_THREAD --rfsim --phy-test --noS1 --nokrnmod 1
@@ -82,7 +82,7 @@ DEFAULT_DNS_IPV4_ADDRESS: your DNS
 编译UE： make -j$(nproc) nr-uesoftmodem
 编译完成后就可以启动基站和UE了
 
-##DMRS输出步骤
+## DMRS输出步骤
 首先在路径openairinterface5g-2021.w23\openair1\PHY\NR_UE_ESTIMATION\nr_dl_channel_estimation.c下添加printf输出语句:
 printf("原始的DMRS内容是 %d + %d j, 接收到的DMRS内容是 %d + %d j \n", pil[0],pil[1],rxF[0],rxF[1]);
  
