@@ -90,3 +90,47 @@ pil[0] 和 pil[1]：基站端DMRS符号的实部和虚部
 rxF[0] 和 rxF[1]：实际接收到的DMRS的实部和虚部  
 //ch[0] 和 ch[1]：对应CSI的实部和虚部  
 然后按上面的步骤重新编译代码并启动基站和UE
+
+# 物理层参数
+## 1.配置环境
+### 1.1 下载并安装VirtualBox
+https://www.virtualbox.org/wiki/Downloads  
+![image](https://user-images.githubusercontent.com/86646728/221450006-7446ffa8-3bd3-4fa4-b127-3deb6ab26a21.png)
+
+### 1.1 下载Vagrant
+https://github.com/mobile-insight/mobileinsight-dev  
+git clone https://github.com/mobile-insight/mobileinsight-dev.git/path/to/dev  
+cd /path/to/dev  
+![image](https://user-images.githubusercontent.com/86646728/221449133-6c2e8a0c-3186-457f-becd-a4790a8dc94e.png)
+
+### 1.2 配置容器
+https://github.com/mobile-insight/mobileinsight-dev#customize-mobileinsight
+
+vagrant destroy  
+vagrant up  
+vagrant ssh  
+![image](https://user-images.githubusercontent.com/86646728/221449342-01e99f42-7747-4bf1-9645-11609cbacadd.png)
+
+cd mi-dev  
+![image](https://user-images.githubusercontent.com/86646728/221449378-b1a3f5b4-6c84-4d2a-ae00-edf7f41c52b7.png)
+
+## 2. mi2log转txt
+https://github.com/mobile-insight/mobileinsight-dev#modify-mobileinsight-core-codes  
+cd ~/mi-dev/mobileinsight-core./install-ubuntu.sh 
+
+测试python文件  
+python3 xxx.py  
+
+example文件  
+https://github.com/mobile-insight/mobileinsight-core/blob/master/examples/offline-analysis-example.py  
+![image](https://user-images.githubusercontent.com/86646728/221449539-accea81a-74b6-4f14-8f90-64a827dc174f.png)
+
+运行成功  
+![image](https://user-images.githubusercontent.com/86646728/221449576-cfa4406c-a01c-49a1-9923-c1c77246439d.png)
+## 3. 传输到本地
+### VirtualBox安装Lunix系统ip地址的问题
+原ip地址：10.0.2.15  
+原因是虚拟机选择的是nat联网方式，将主机虚拟成10.0.2.1然后随机给虚拟机一个10.0.2.15的地址，可
+以看网关是多少，那就是虚拟出来主机的地址。  
+![image](https://user-images.githubusercontent.com/86646728/221449696-42cd681e-02ef-4837-ba57-e624dc5802ae.png)
+![image](https://user-images.githubusercontent.com/86646728/221449727-2c482c5a-6745-4eeb-b0b5-f717af34cdf5.png)
