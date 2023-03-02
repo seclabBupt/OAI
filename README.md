@@ -133,4 +133,6 @@ https://github.com/mobile-insight/mobileinsight-core/blob/master/examples/offlin
 原因是虚拟机选择的是nat联网方式，将主机虚拟成10.0.2.1然后随机给虚拟机一个10.0.2.15的地址，可
 以看网关是多少，那就是虚拟出来主机的地址。  
 ![image](https://user-images.githubusercontent.com/86646728/221449696-42cd681e-02ef-4837-ba57-e624dc5802ae.png)
-![image](https://user-images.githubusercontent.com/86646728/221449727-2c482c5a-6745-4eeb-b0b5-f717af34cdf5.png)
+![image](https://user-images.githubusercontent.com/86646728/221449727-2c482c5a-6745-4eeb-b0b5-f717af34cdf5.png)  
+用户名和密码均为vagrant  
+![aee1aeb5670bb07fb1c0c15015cf8d7](https://user-images.githubusercontent.com/86646728/222389644-0c371bc2-0d54-442f-a502-0bc6785a8335.jpg)
