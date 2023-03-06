@@ -136,3 +136,16 @@ https://github.com/mobile-insight/mobileinsight-core/blob/master/examples/offlin
 ![image](https://user-images.githubusercontent.com/86646728/221449727-2c482c5a-6745-4eeb-b0b5-f717af34cdf5.png)  
 用户名和密码均为vagrant  
 ![aee1aeb5670bb07fb1c0c15015cf8d7](https://user-images.githubusercontent.com/86646728/222389644-0c371bc2-0d54-442f-a502-0bc6785a8335.jpg)
+
+# OTFS调制修改代码
+##代码文件介绍：
+CMakeLists.txt，该文件为OAI的编译文件，只有当需要编译如fftw的外部函数库时才需要修改该文件，在修改时注意加入函数库位置，越往后的函数库编译优先级越高，所以应当把其他包所依赖的函数包放在最后面，例如fftw就应当放在PHY相关编译的后面。
+otfs.c、otfs.h，OTFS调制与解调的头文件和实现文件
+nr_dlsch.c：PDSCH实现文件，由于我的工作是对实现该信道的OTFS调制，因此基站端所有针对OTFS的改动都在这个文件上
+phy_procedures_nr_ue.c：UE端对OTFS解调与信道估计的改动都在这个文件上
+nr-ue.c：这个是UE运行的主文件，在我这里作为了采集UE端数据的代码文件，这个根据自己所需要采集的数据进行修改。根据实验的需要也可以在其他文件来收集数据，需要注意数据流在OAI架构中的变化才能收集到自己所需要的数据
+softmodem-common.c、softmodem-common.h：这两个文件主要是修改命令行的文件，修改好后可以通过命令行设置收发双方是否使用OTFS调制还是原有的OFDM调制，但我遇到了问题并没有实现，运行OTFS调制的话需要将softmodem-common.c中的otfs变量置为1，然后编译基站端和UE端才可以。如果要运行回原本的OFDM的话则需要改回0，并再次编译基站和UE端
+sim.h、random_channel.c、rfsim.c：这两个文件都涉及到信道建模，对于任何类型的信道的description都需要先在sim.h声明，再在random_channel.c中赋予参数，这部分可以学习博客https://blog.csdn.net/BUPTOctopus/article/details/106920535，参数赋予完成后还应当根据自己所需要的信道性质在rfsim.c进行中进一步操作，例如雷达回波就需要经历两次我描述的信道并且添加移动反射面的路径（时延、多普勒、反射系数）
+## fftw包的安装与应用
+注意：为了实现OTFS调制我在OAI中引入了一个外部函数库fftw，所以运行OTFS代码时需要已安装解压fftw并且将静态链接添加到OAI的编译中
+fftw的官方网址：https://www.fftw.org/download.html，具体安装应用流程会根据系统而有区别
